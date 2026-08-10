@@ -20,6 +20,7 @@ function DepartmentPage() {
       resolved: 10,
       icon: "💡",
     },
+    
     {
       name: "Water Department",
       pending: 1,
