@@ -1,0 +1,95 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+}
+
+/* Dark Mode */
+
+.dark-mode {
+  background-color: #121212;
+  color: white;
+}
+
+.dark-mode .card {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+.dark-mode .table {
+  color: white;
+}
+
+.dark-mode .navbar {
+  background-color: #000 !important;
+}
+
+/* Cards */
+
+.card {
+  transition: all 0.3s ease;
+  border: none;
+  border-radius: 12px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Buttons */
+
+.btn {
+  border-radius: 8px;
+}
+
+/* Tables */
+
+.table {
+  background: white;
+}
+
+/* Home Page */
+
+.hero-section {
+  padding: 60px 20px;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.hero-subtitle {
+  color: #6c757d;
+}
+
+/* Dashboard */
+
+.dashboard-card {
+  border-radius: 12px;
+}
+
+/* Image Preview */
+
+.issue-image {
+  width: 250px;
+  border-radius: 10px;
+}
+
+/* Footer */
+
+.footer {
+  margin-top: 50px;
+  padding: 20px;
+  text-align: center;
+  background: #212529;
+  color: white;
+}
+.dashboard-card{
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover{
+  transform: translateY(-8px);
+}
