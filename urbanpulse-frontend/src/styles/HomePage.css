@@ -1,0 +1,13 @@
+.feature-card{
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.feature-card:hover{
+  transform: translateY(-10px);
+}
+
+.feature-icon{
+  font-size: 50px;
+}
