@@ -2,6 +2,6 @@ export const departments = [
   "Roads",
   "Sanitation",
   "Electricity",
-  "Water",""
+  "Water",
   "Traffic",
 ];
