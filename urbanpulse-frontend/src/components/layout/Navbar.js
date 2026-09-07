@@ -8,6 +8,7 @@ function Navbar() {
   const isLoggedIn =
     localStorage.getItem("isLoggedIn") === "true";
 
+    
   const role =
     localStorage.getItem("role");
 
