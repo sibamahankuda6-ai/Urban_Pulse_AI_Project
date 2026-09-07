@@ -4,5 +4,4 @@ export const departments = [
   "Electricity",
   "Water",
   "Traffic",
-  
 ];
