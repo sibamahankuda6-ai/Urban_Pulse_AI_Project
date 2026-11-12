@@ -1,171 +1,152 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import authService from "../services/authService";
 
 function LoginPage() {
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleLogin = async (e) => {
-
     e.preventDefault();
-    
+
+    if (!email.trim()) {
+      setErrorMsg("Please enter your email.");
+      return;
+    }
+    if (!password) {
+      setErrorMsg("Please enter your password.");
+      return;
+    }
+
+    setLoading(true);
+    setErrorMsg("");
 
     try {
+      const response = await authService.login(email.trim().toLowerCase(), password);
 
-      const user =
-        await authService.login(
-          email,
-          password
-        );
+      toast.success("Login Successful");
 
-      localStorage.setItem(
-        "isLoggedIn",
-        "true"
-      );
-
-      localStorage.setItem(
-        "role",
-        user.role.toLowerCase()
-      );
-
-      localStorage.setItem(
-        "user",
-        JSON.stringify(user)
-      );
-
-      toast.success(
-        "Login Successful"
-      );
+      const role = (response.role || "").toUpperCase();
 
       setTimeout(() => {
-
-        if (
-          user.role === "ADMIN"
-        ) {
-
-          window.location.href =
-            "/dashboard";
-
+        if (role === "ADMIN") {
+          navigate("/dashboard");
+        } else if (role === "WORKER" || role === "DEPARTMENT") {
+          navigate("/worker-dashboard");
+        } else {
+          navigate("/issues");
         }
-
-        else if (
-          user.role === "WORKER"
-        ) {
-
-          window.location.href =
-            "/worker-dashboard";
-
-        }
-
-        else {
-
-          window.location.href =
-            "/issues";
-
-        }
-
-      }, 1000);
-
+      }, 500);
+    } catch (error) {
+      const serverMsg =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        "Invalid email or password";
+      setErrorMsg(serverMsg);
+      toast.error(serverMsg);
+    } finally {
+      setLoading(false);
     }
-
-    catch (error) {
-
-      toast.error(
-        "Invalid Email or Password"
-      );
-
-    }
-
   };
 
   return (
-    <div className="container mt-5">
-
+    <div className="container py-5">
       <div
         className="card mx-auto p-4 shadow-lg border-0"
         style={{
           maxWidth: "450px",
-          borderRadius: "20px"
+          borderRadius: "20px",
         }}
       >
-
-        <h2 className="text-center mb-2 fw-bold">
-          Urban Pulse AI
-        </h2>
-
-        <p className="text-center text-muted">
+        <h2 className="text-center mb-1 fw-bold">Urban Pulse AI</h2>
+        <p className="text-center text-muted mb-4">
           Smart City Management Portal
         </p>
 
-        <form onSubmit={handleLogin}>
+        {errorMsg && (
+          <div className="alert alert-danger py-2" role="alert">
+            <small>{errorMsg}</small>
+          </div>
+        )}
 
+        <form onSubmit={handleLogin} noValidate>
           <div className="mb-3">
-
-            <label>Email</label>
-
+            <label className="form-label fw-semibold">Email</label>
             <input
               type="email"
               className="form-control"
+              placeholder="Enter your email"
               value={email}
-              onChange={(e) =>
-                setEmail(e.target.value)
-              }
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (errorMsg) setErrorMsg("");
+              }}
               required
+              disabled={loading}
             />
-
           </div>
 
           <div className="mb-3">
-
-            <label>Password</label>
-
-            <input
-              type="password"
-              className="form-control"
-              value={password}
-              onChange={(e) =>
-                setPassword(e.target.value)
-              }
-              required
-            />
-
+            <label className="form-label fw-semibold">Password</label>
+            <div className="input-group">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="form-control"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (errorMsg) setErrorMsg("");
+                }}
+                required
+                disabled={loading}
+              />
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={() => setShowPassword(!showPassword)}
+                tabIndex="-1"
+              >
+                {showPassword ? "👁️ Hide" : "👁️ Show"}
+              </button>
+            </div>
           </div>
 
           <button
             type="submit"
-            className="btn btn-primary w-100"
+            className="btn btn-primary w-100 py-2 fw-semibold"
+            disabled={loading}
           >
-            🔐 Login
+            {loading ? (
+              <span>
+                <span
+                  className="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                Authenticating...
+              </span>
+            ) : (
+              "🔐 Login"
+            )}
           </button>
-
         </form>
 
-        <hr />
-
-        <div className="alert alert-info">
-
-          <small>
-            Backend Login Enabled
+        <div className="text-center mt-4">
+          <small className="text-muted">
+            Don't have an account?{" "}
+            <Link to="/register" className="fw-semibold text-primary">
+              Register here
+            </Link>
           </small>
-
-          <br />
-
-          <small>
-            Example:
-          </small>
-
-          <br />
-
-          <small>
-            admin@gmail.com / 12345
-          </small>
-
         </div>
-
       </div>
-
     </div>
   );
 }

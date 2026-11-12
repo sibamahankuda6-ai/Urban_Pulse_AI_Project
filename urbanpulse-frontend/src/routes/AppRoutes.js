@@ -16,6 +16,7 @@ import DashboardPage from "../pages/DashboardPage";
 import ReportIssuePage from "../pages/ReportIssuePage";
 import IssueListPage from "../pages/IssueListPage";
 import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
 import NotificationPage from "../pages/NotificationPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import WorkerDashboardPage from "../pages/WorkerDashboardPage";
@@ -40,6 +41,11 @@ function AppRoutes() {
         <Route
           path="/login"
           element={<LoginPage />}
+        />
+
+        <Route
+          path="/register"
+          element={<RegisterPage />}
         />
 
         <Route

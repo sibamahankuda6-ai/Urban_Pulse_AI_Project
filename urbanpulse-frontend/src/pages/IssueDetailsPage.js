@@ -12,37 +12,37 @@ function IssueDetailsPage() {
   const role = localStorage.getItem("role");
 
   useEffect(() => {
-    fetchIssueDetails();
-  }, [id]);
+    const fetchIssueDetails = async () => {
+      try {
+        const allIssues = await complaintService.getAllComplaints();
 
-  const fetchIssueDetails = async () => {
-    try {
-      const allIssues = await complaintService.getAllComplaints();
+        const selectedIssue = allIssues.find(
+          (item) => item.id.toString() === id
+        );
 
-      const selectedIssue = allIssues.find(
-        (item) => item.id.toString() === id
-      );
+        if (selectedIssue) {
+          const feedbackMap =
+            JSON.parse(localStorage.getItem("issueFeedback")) || {};
 
-      if (selectedIssue) {
-        const feedbackMap =
-          JSON.parse(localStorage.getItem("issueFeedback")) || {};
+          const savedFeedback = feedbackMap[selectedIssue.id];
 
-        const savedFeedback = feedbackMap[selectedIssue.id];
+          if (savedFeedback) {
+            setRating(savedFeedback.rating || "");
+            setComment(savedFeedback.comment || "");
+          }
 
-        if (savedFeedback) {
-          setRating(savedFeedback.rating || "");
-          setComment(savedFeedback.comment || "");
+          setIssue(selectedIssue);
+        } else {
+          setIssue(null);
         }
-
-        setIssue(selectedIssue);
-      } else {
+      } catch (error) {
+        console.error("Failed to fetch issue details:", error);
         setIssue(null);
       }
-    } catch (error) {
-      console.error("Failed to fetch issue details:", error);
-      setIssue(null);
-    }
-  };
+    };
+
+    fetchIssueDetails();
+  }, [id]);
 
   const saveFeedback = () => {
     if (!issue) return;

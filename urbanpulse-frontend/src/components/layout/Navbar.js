@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/Logo.png.jpeg";
+import authService from "../../services/authService";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -13,14 +14,8 @@ function Navbar() {
     localStorage.getItem("role");
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("role");
-
-    alert("Logged Out Successfully");
-
+    authService.logout();
     navigate("/login");
-
-    window.location.reload();
   };
 
   return (
@@ -205,12 +200,20 @@ function Navbar() {
           {/* Guest */}
 
           {!isLoggedIn && (
-            <Link
-              className="btn btn-success btn-sm ms-2"
-              to="/login"
-            >
-              Login
-            </Link>
+            <div className="d-flex align-items-center">
+              <Link
+                className="btn btn-outline-light btn-sm ms-2"
+                to="/login"
+              >
+                Login
+              </Link>
+              <Link
+                className="btn btn-primary btn-sm ms-2"
+                to="/register"
+              >
+                Register
+              </Link>
+            </div>
           )}
 
         </div>

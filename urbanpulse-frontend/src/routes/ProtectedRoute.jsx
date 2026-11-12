@@ -1,38 +1,26 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-function ProtectedRoute({
-  children,
-  role,
-}) {
+function ProtectedRoute({ children, role }) {
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const token = localStorage.getItem("token");
+  const userRole = (localStorage.getItem("role") || "").toLowerCase();
 
-  const isLoggedIn =
-    localStorage.getItem(
-      "isLoggedIn"
-    );
-
-  const userRole =
-    localStorage.getItem(
-      "role"
-    );
-
-  if (!isLoggedIn) {
-
-    return (
-      <Navigate to="/login" />
-    );
-
+  // If not authenticated or no token, redirect to login
+  if (!isLoggedIn || !token) {
+    return <Navigate to="/login" replace />;
   }
 
-  if (
-    role &&
-    userRole !== role
-  ) {
+  // If role is specified, verify permission
+  if (role) {
+    const required = role.toLowerCase();
+    // Allow either 'worker' or 'department' for worker routes
+    const isWorkerMatch =
+      required === "worker" && (userRole === "worker" || userRole === "department");
 
-    return (
-      <Navigate to="/" />
-    );
-
+    if (userRole !== required && !isWorkerMatch) {
+      return <Navigate to="/" replace />;
+    }
   }
 
   return children;

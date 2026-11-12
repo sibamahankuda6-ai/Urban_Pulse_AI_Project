@@ -108,19 +108,21 @@ if (imageFile) {
 
 }
 
-const complaintData = {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const citizenEmail = user.email || "";
 
-  issueType: issueType,
-  location: location,
-  description: description,
-  priority: priority,
-  status: "Pending",
-  assignedWorker: "",
-  resolutionNote: "",
-  imageUrl: uploadedImageUrl,
-  createdAt: new Date().toLocaleString()
-
-};
+    const complaintData = {
+      issueType: issueType,
+      location: location,
+      description: description,
+      priority: priority,
+      status: "Pending",
+      assignedWorker: "",
+      resolutionNote: "",
+      imageUrl: uploadedImageUrl,
+      createdAt: new Date().toLocaleString(),
+      citizenEmail: citizenEmail,
+    };
 
   await complaintService.createComplaint(
     complaintData
