@@ -32,23 +32,47 @@ public class ComplaintServiceImpl implements ComplaintService {
     @Override
     public Complaint getComplaintById(Long id) {
         return complaintRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Complaint not found"));
+                .orElseThrow(() -> new RuntimeException("Complaint not found with ID: " + id));
     }
 
+    @Override
+    public List<Complaint> getComplaintsByCitizen(String email) {
+        return complaintRepository.findByCitizenEmail(email);
+    }
 
-
+    @Override
+    public List<Complaint> getComplaintsByWorker(String worker) {
+        return complaintRepository.findByAssignedWorker(worker);
+    }
 
     @Override
     public Complaint updateComplaint(Long id, Complaint complaint) {
 
         Complaint existing = complaintRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Complaint not found"));
+                .orElseThrow(() -> new RuntimeException("Complaint not found with ID: " + id));
 
-        existing.setStatus(complaint.getStatus());
-        existing.setAssignedWorker(complaint.getAssignedWorker());
-        existing.setResolutionNote(complaint.getResolutionNote());
+        if (complaint.getStatus() != null) {
+            existing.setStatus(complaint.getStatus());
+        }
+        if (complaint.getAssignedWorker() != null) {
+            existing.setAssignedWorker(complaint.getAssignedWorker());
+        }
+        if (complaint.getResolutionNote() != null) {
+            existing.setResolutionNote(complaint.getResolutionNote());
+        }
+        if (complaint.getDescription() != null) {
+            existing.setDescription(complaint.getDescription());
+        }
+        if (complaint.getLocation() != null) {
+            existing.setLocation(complaint.getLocation());
+        }
+        if (complaint.getPriority() != null) {
+            existing.setPriority(complaint.getPriority());
+        }
+        if (complaint.getImageUrl() != null) {
+            existing.setImageUrl(complaint.getImageUrl());
+        }
 
         return complaintRepository.save(existing);
-
     }
 }

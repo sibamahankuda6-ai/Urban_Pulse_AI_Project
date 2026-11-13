@@ -19,7 +19,18 @@ public class User {
 
     private String role;
 
+    private String phone;
+
     public User() {
+    }
+
+    public User(Long id, String name, String email, String password, String role, String phone) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.phone = phone;
     }
 
     public Long getId() {
@@ -60,5 +71,21 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getMobile() {
+        return phone;
+    }
+
+    public void setMobile(String mobile) {
+        this.phone = mobile;
     }
 }

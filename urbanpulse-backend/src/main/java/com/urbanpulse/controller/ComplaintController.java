@@ -21,8 +21,26 @@ public class ComplaintController {
     }
 
     @GetMapping
-    public List<Complaint> getAllComplaints() {
+    public List<Complaint> getAllComplaints(
+            @RequestParam(required = false) String citizenEmail,
+            @RequestParam(required = false) String worker) {
+        if (citizenEmail != null && !citizenEmail.trim().isEmpty()) {
+            return complaintService.getComplaintsByCitizen(citizenEmail.trim());
+        }
+        if (worker != null && !worker.trim().isEmpty()) {
+            return complaintService.getComplaintsByWorker(worker.trim());
+        }
         return complaintService.getAllComplaints();
+    }
+
+    @GetMapping("/user/{email}")
+    public List<Complaint> getComplaintsByUser(@PathVariable String email) {
+        return complaintService.getComplaintsByCitizen(email);
+    }
+
+    @GetMapping("/worker/{worker}")
+    public List<Complaint> getComplaintsByWorker(@PathVariable String worker) {
+        return complaintService.getComplaintsByWorker(worker);
     }
 
     @GetMapping("/{id}")

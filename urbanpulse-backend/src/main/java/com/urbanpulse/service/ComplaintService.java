@@ -11,6 +11,10 @@ public interface ComplaintService {
 
     Complaint getComplaintById(Long id);
 
+    List<Complaint> getComplaintsByCitizen(String email);
+
+    List<Complaint> getComplaintsByWorker(String worker);
+
     Complaint updateComplaint(Long id, Complaint complaint);
 
     void deleteComplaint(Long id);

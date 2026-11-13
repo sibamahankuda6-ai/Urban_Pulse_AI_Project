@@ -34,4 +34,6 @@ public class Complaint {
     private String imageUrl;
 
     private String createdAt;
+
+    private String citizenEmail;
 }

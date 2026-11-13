@@ -23,6 +23,9 @@ public class AnalyticsController {
     @Autowired
     private DepartmentRepository departmentRepository;
 
+    @Autowired
+    private com.urbanpulse.repository.UserRepository userRepository;
+
     @GetMapping("/dashboard")
     public Map<String, Object> dashboardAnalytics() {
 
@@ -40,10 +43,20 @@ public class AnalyticsController {
         data.put(
                 "totalDepartments",
                 departmentRepository.count());
+
+        data.put(
+                "totalUsers",
+                userRepository.count());
+
         data.put(
                 "pendingComplaints",
                 complaintRepository.countByStatus(
                         "Pending"));
+
+        data.put(
+                "inProgressComplaints",
+                complaintRepository.countByStatus(
+                        "In Progress"));
 
         data.put(
                 "resolvedComplaints",
